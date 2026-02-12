@@ -1,0 +1,69 @@
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+
+  /* no vertical centering needed now */
+  display: flex;
+  justify-content: center;
+}
+
+/* Keep the aura anchored to bottom */
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(
+    circle,
+    rgba(220, 230, 255, 0.18) 0%,
+    rgba(200, 210, 230, 0.12) 40%,
+    transparent 70%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Pulsating silver glow */
+@keyframes silverPulse {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 2px rgba(220,230,255,0.6))
+      drop-shadow(0 0 6px rgba(200,210,230,0.4));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 3px rgba(220,230,255,0.75))
+      drop-shadow(0 0 10px rgba(200,210,230,0.55));
+  }
+}
+
+.girl-silhouette {
+  position: absolute;
+  bottom: 0;            /* anchors to bottom */
+  left: 50%;
+  transform: translateX(-50%);  /* keeps centered */
+
+  height: 95vh;         /* slightly less than 100vh prevents cropping */
+  width: auto;
+  object-fit: contain;
+
+  z-index: 2;
+  pointer-events: none;
+
+  animation: silverPulse 3.5s ease-in-out infinite;
+}
+
+
+.events-heading {
+  position: absolute;
+  top: 5%;       /* move vertically */
+  left: 27%;       /* moves into the black space */
+  width: 620px;   /* adjust size */
+  height: 400px;
+
+  z-index: 5;     /* above masks */
+  pointer-events: none;
+}

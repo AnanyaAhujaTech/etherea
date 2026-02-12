@@ -1,0 +1,333 @@
+/* Wrapper for the section content */
+.smaran-container {
+  width: 100%;
+  position: relative;
+  background: transparent;
+  color: white;
+  box-sizing: border-box;
+}
+
+/* --- SECTIONS --- */
+.smaran-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 80px 20px;
+  background: radial-gradient(circle at center, rgba(17, 17, 17, 0.8) 0%, rgba(0, 0, 0, 0.60) 100%);
+}
+
+.faq-section-spacing {
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.smaran-header, .faq-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  z-index: 2;
+  width: 100%;
+}
+
+/* --- TEXT STYLES --- */
+.smaran-title {
+  font-family: Georgia, serif;
+  font-size: 3.5rem;
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: #e2e8f0;
+}
+
+/* FAQ Heading Image Style */
+.smaran-heading-img {
+  display: block;
+  max-width: 100%;
+  width: 600px;
+  height: auto;
+  margin: 0 auto 1rem auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2)); 
+}
+
+/* Smaran Main Heading Image Style */
+.smaran-main-heading-img {
+  display: block;
+  max-width: 100%;
+  width: 200px; 
+  height: auto;
+  margin: 0 auto 0.5rem auto; 
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+.smaran-subtitle {
+  font-size: 1.5rem;
+  color: #d4a843;
+  margin: 0.5rem 0;
+  font-style: italic;
+  font-family: "Times New Roman";
+  font-weight: 300;
+}
+
+.smaran-text {
+  color: #d4a843;
+  font-family: "Times New Roman";
+  font-style: italic;
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+  font-weight: 300;
+}
+
+/* --- CARDS (FAN EFFECT) --- */
+.cards-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 420px;
+  perspective: 1000px;
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.smaran-card {
+  width: 240px;
+  height: 340px;
+  /* Updated: Background color removed from here, moved to overlay */
+  background: black; 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  position: relative;
+  margin: 0 -40px; 
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  backdrop-filter: blur(0px); /* Blur removed to let image show clear */
+  cursor: pointer;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  transform-origin: bottom center;
+  overflow: hidden;
+}
+
+/* --- NEW IMAGE & OVERLAY STYLES --- */
+.card-bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1; /* Lowest level */
+  transition: transform 0.6s ease;
+  filter: grayscale(40%); /* Optional: makes colors pop more on hover */
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--card-bg); /* Use the card color as a tint */
+  z-index: 2; /* Sit on top of image */
+  opacity: 0.7; /* Adjust this to see more/less of the image */
+  mix-blend-mode: multiply; /* Helps blend color with image */
+  transition: opacity 0.3s ease;
+}
+
+/* Card Inner Content */
+.card-inner {
+  position: relative;
+  z-index: 3; /* Sit on top of overlay and image */
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.card-number {
+  font-size: 1.2rem;
+  color: #fff; /* Brighter white for better contrast vs image */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  font-family: monospace;
+  opacity: 0.9;
+}
+
+.card-content {
+  opacity: 0.9; /* Increased visibility */
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.card-content h4 {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-family: Georgia, serif;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.7); /* Shadow for text readability */
+}
+
+.card-content p {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.5;
+  color: #e2e8f0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+/* Card Hover Effects */
+.smaran-card:hover {
+  transform: translateY(-50px) scale(1.05) rotate(0deg) !important;
+  z-index: 100;
+  /* Removed simple background, image handles it now */
+  border-color: var(--card-glow);
+  box-shadow: 0 0 40px var(--card-glow);
+  margin: 0 10px;
+}
+
+/* Zoom the image on hover */
+.smaran-card:hover .card-bg-image {
+  transform: scale(1.15);
+  filter: grayscale(0%);
+}
+
+/* Lighten the overlay on hover to show image better */
+.smaran-card:hover .card-overlay {
+  opacity: 0.4;
+  background: linear-gradient(to top, var(--card-bg), rgba(0,0,0,0.2));
+}
+
+.smaran-card:hover .card-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Rotate cards for initial fan look (Desktop Only) */
+@media (min-width: 769px) {
+  .smaran-card:nth-child(1) { transform: rotate(-10deg) translateY(20px); }
+  .smaran-card:nth-child(2) { transform: rotate(-5deg) translateY(10px); }
+  .smaran-card:nth-child(3) { transform: rotate(0deg) translateY(0px); }
+  .smaran-card:nth-child(4) { transform: rotate(5deg) translateY(10px); }
+  .smaran-card:nth-child(5) { transform: rotate(10deg) translateY(20px); }
+}
+
+/* --- FAQ SECTION --- */
+.faq-list {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faq-item {
+  background: var(--faq-bg); 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.faq-question {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+/* Chevron Icon */
+.faq-chevron {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid rgba(255,255,255,0.5);
+  border-bottom: 2px solid rgba(255,255,255,0.5);
+  transform: rotate(45deg);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  background: rgba(0, 0, 0, 0.2); 
+}
+
+.faq-answer p {
+  padding: 0 24px 24px 24px;
+  margin: 0;
+  color: #cbd5e1;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+}
+
+/* FAQ Hover State */
+.faq-item:hover {
+  border-color: var(--faq-border);
+  box-shadow: 0 0 20px var(--faq-border);
+  transform: translateY(-2px); 
+}
+
+/* FAQ Active State */
+.faq-item.active {
+  border-color: var(--faq-border);
+  box-shadow: 0 0 30px var(--faq-border);
+  background: linear-gradient(to right, var(--faq-bg), rgba(30, 36, 50, 0.6));
+}
+
+.faq-item.active .faq-chevron {
+  transform: rotate(225deg);
+  border-color: var(--faq-border);
+}
+
+.faq-item.active .faq-answer {
+  max-height: 200px;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+  .smaran-title {
+    font-size: 2.5rem;
+  }
+  
+  .smaran-heading-img,
+  .smaran-main-heading-img {
+    width: 300px;
+  }
+
+  /* Disable Fan effect on mobile */
+  .cards-wrapper {
+    flex-direction: column;
+    height: auto;
+    gap: 24px;
+    padding-bottom: 40px;
+  }
+
+  .smaran-card {
+    margin: 0 !important;
+    transform: none !important;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .smaran-card:hover {
+    transform: none !important; 
+    margin: 0 !important;
+    transform: scale(1.02) !important;
+  }
+  
+  .card-content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

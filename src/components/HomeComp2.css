@@ -1,0 +1,138 @@
+.homecomp2 {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+  padding: 80px 24px;
+}
+
+.homecomp2__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+/* Festival Section */
+.festival {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.festival__title {
+  font-size: 3.5rem;
+  font-family: Georgia, serif;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #e2e8f0;
+}
+
+.festival__title span {
+  color: #d4a843;
+  font-style: italic;
+}
+
+.festival__description {
+  color: #8892a5;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  max-width: 520px;
+}
+
+.festival__quote {
+  color: rgba(136, 146, 165, 0.7);
+  font-style: italic;
+  font-size: 1.125rem;
+  max-width: 520px;
+}
+
+/* Navrasa */
+.navrasa {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(30, 36, 50, 0.5);
+  backdrop-filter: blur(12px);
+  padding: 40px;
+}
+
+.navrasa__title {
+  font-size: 1.75rem;
+  font-family: Georgia, serif;
+  text-align: center;
+  color: #e2e8f0;
+  margin-bottom: 32px;
+}
+
+.navrasa__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.navrasa__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.navrasa__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.navrasa__name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #e2e8f0;
+}
+
+.navrasa__meaning {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #8892a5;
+}
+
+.navrasa__footer {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+
+.navrasa__footer p {
+  font-size: 0.875rem;
+  color: #8892a5;
+  font-style: italic;
+}
+
+@media (max-width: 1024px) {
+  .homecomp2__container {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .festival__title {
+    font-size: 2.5rem;
+  }
+}
+
+/* Right side muni image */
+.muni {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.muni__image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  object-fit: contain;
+}

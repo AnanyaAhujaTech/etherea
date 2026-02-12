@@ -1,0 +1,15 @@
+.starfield-container {
+  width: 100%;
+  height: 100%;
+  position: absolute; /* Ensures it sits correctly if used as a background */
+  top: 0;
+  left: 0;
+  pointer-events: none; /* Allows clicks to pass through to content below */
+  z-index: 0; /* Adjust based on your layout needs */
+}
+
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}

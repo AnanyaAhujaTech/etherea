@@ -1,0 +1,79 @@
+.hero-container {
+  position: relative;
+  height: 200vh; /* important for parallax */
+  width: 100%;
+}
+
+.hero-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Background image */
+.hero-background {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+/* Star layer */
+.hero-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* Title */
+.hero-title {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  text-align: center;
+  font-size: 80px;
+  letter-spacing: 0.3em;
+  color: white;
+  z-index: 5;
+  font-family: Georgia, serif;
+}
+
+/* Subtitle */
+.hero-subtitle {
+  position: absolute;
+  top: 55%;
+  width: 100%;
+  text-align: center;
+  font-size: 22px;
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
+  z-index: 5;
+}
+
+/* Scroll indicator */
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+  z-index: 6;
+  letter-spacing: 0.2em;
+}
+
+.scroll-line {
+  width: 2px;
+  height: 30px;
+  background: rgba(255,255,255,0.4);
+  margin: 8px auto 0;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}

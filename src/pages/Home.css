@@ -1,0 +1,46 @@
+.home-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Background image */
+.background-image {
+  position: fixed;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: brightness(0.65);
+  z-index: 0;
+}
+
+/* Galaxy layer */
+.galaxy-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.galaxy-layer canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Page content */
+.content-layer {
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+/* Temporary hero styling */
+.home-hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,69 @@
+/* Main Card */
+.rasa-card {
+  /* Glass background */
+  background: rgba(20, 30, 60, 0.30);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  /* Silver border */
+  border: 1px solid rgba(192, 192, 192, 0.5);
+  border-radius: 18px;
+
+  padding: 24px;
+  cursor: pointer;
+  color: white;
+
+  /* Smooth animation */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Hover glow */
+.rasa-card:hover {
+  transform: translateY(-6px);
+
+  border-color: rgba(230, 230, 230, 0.9);
+
+  box-shadow:
+    0 0 12px rgba(220, 220, 220, 0.35),
+    0 0 30px rgba(220, 220, 220, 0.2);
+}
+
+
+/* Event Title */
+.rasa-card h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+
+/* Rasa type text (Raudra · Fury) */
+.rasa-type {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 17px;
+  margin-bottom: 14px;
+  opacity: 0.9;
+}
+
+
+/* Description */
+.rasa-description {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+
+/* Time + location */
+.meta {
+  margin-top: 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  opacity: 0.75;
+}
