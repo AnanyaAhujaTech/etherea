@@ -8,7 +8,7 @@ import {
 } from "../config/timeConfig";
 
 // ==========================================
-// 🎛️ CONTROL PANEL
+// 🎛️ CONTROL PANEL (VISUAL STYLES)
 // ==========================================
 
 const CONFIG = {
@@ -22,7 +22,7 @@ const CONFIG = {
     MARGIN_BOTTOM: "60px",
     OPACITY: 1.0, 
     
-    // NEW: Stronger Glow
+    // Glow effect behind the logo
     BG_GLOW: {
       COLOR: "rgba(255, 176, 50, 0.7)", // Bright Copper
       SIZE_SCALE: "1.5", 
@@ -46,48 +46,69 @@ const CONFIG = {
 };
 
 // ==========================================
+// 🧩 COMPONENT
+// ==========================================
 
 export default function CountdownClock() {
+  // References to DOM elements
   const mainHandRef = useRef(null);
   const minuteHandRef = useRef(null);
   const gearRef = useRef(null);
   const segmentsRef = useRef(null);
 
+  // Configuration for start/end points on the ring
+  // These keys must match the keys in timeConfig.js -> RING_SEGMENTS
   const START_MARKER = "Taking Shape";
   const END_MARKER = "The Moment You've Waited For...";
 
+  // State refs for animation loop
   const lastSecond = useRef(getCurrentSecond());
   const visualRotation = useRef(getInitialRotation());
 
   useEffect(() => {
+    // 1. Set initial state immediately to avoid layout thrashing
     if (minuteHandRef.current) {
       gsap.set(minuteHandRef.current, { rotation: visualRotation.current });
     }
 
+    // 2. The Animation Loop
     const tick = () => {
+      // A. Update Main Hand (The Slow Progress Hand)
+      // This calculates the exact position between Feb 14 and Feb 24
       const mainRotation = getClockRotation(START_MARKER, END_MARKER);
-      if (mainHandRef.current) gsap.set(mainHandRef.current, { rotation: mainRotation });
+      if (mainHandRef.current) {
+        gsap.set(mainHandRef.current, { rotation: mainRotation });
+      }
 
+      // B. Update Minute/Second Hand (The Ticking Hand)
       const currentSecond = getCurrentSecond();
       if (currentSecond !== lastSecond.current) {
+        // Increment rotation by 6 degrees
         visualRotation.current += TICK_SETTINGS.DEGREES_PER_TICK;
+        
         if (minuteHandRef.current) {
           gsap.to(minuteHandRef.current, {
             rotation: visualRotation.current,
             duration: TICK_SETTINGS.DURATION,    
             ease: `back.out(${TICK_SETTINGS.ELASTICITY})`,
-            overwrite: true,
+            overwrite: true, // Ensures new ticks override old ones if user lags
           });
         }
         lastSecond.current = currentSecond;
       }
 
+      // C. Update Ambient Rotation (Gears & Segments)
       if (gearRef.current) gsap.set(gearRef.current, { rotation: "+=0.5" });
       if (segmentsRef.current) gsap.set(segmentsRef.current, { rotation: "-=0.05" }); 
     };
 
+    // 3. Bind to GSAP Ticker (more efficient than setInterval)
     gsap.ticker.add(tick);
-    return () => gsap.ticker.remove(tick);
+
+    // 4. Cleanup on Unmount
+    return () => {
+      gsap.ticker.remove(tick);
+    };
   }, []);
 
   return (
@@ -147,12 +168,12 @@ export default function CountdownClock() {
             height: CONFIG.SIZES.GLOBAL_SIZE,
           }}
         >
-          {/* Layer 1: Segments */}
+          {/* Layer 1: Segments (Rotating Background) */}
           <div style={{ ...styles.layerContainer, zIndex: 1, width: CONFIG.SIZES.SEGMENT_SCALE, height: CONFIG.SIZES.SEGMENT_SCALE }}>
             <img ref={segmentsRef} src="/assets/clock_segments.png" alt="Segments" style={styles.imageFit} />
           </div>
 
-          {/* Layer 2: Ring */}
+          {/* Layer 2: Ring (Static with Glow) */}
           <div style={{ ...styles.layerContainer, zIndex: 2, width: CONFIG.SIZES.RING_SCALE, height: CONFIG.SIZES.RING_SCALE }}>
             <img 
               src="/assets/clock_ring.png" 
@@ -170,7 +191,7 @@ export default function CountdownClock() {
             />
           </div>
 
-          {/* Layer 4: Main Hand */}
+          {/* Layer 4: Main Hand (Progress Tracker) */}
           <div ref={mainHandRef} style={{ ...styles.handContainer, zIndex: 4 }}>
             <img 
               src="/assets/clock_hand.png" 
@@ -179,7 +200,7 @@ export default function CountdownClock() {
             />
           </div>
 
-          {/* Layer 5: Minute Hand */}
+          {/* Layer 5: Minute Hand (Visual Ticker) */}
           <div ref={minuteHandRef} style={{ ...styles.handContainer, zIndex: 5 }}>
             <img 
               src="/assets/long_clock_hand.png" 
@@ -188,7 +209,7 @@ export default function CountdownClock() {
             />
           </div>
 
-          {/* Layer 6: Gears */}
+          {/* Layer 6: Gears (Center Decoration) */}
           <div style={{ ...styles.centerPivot, zIndex: 6, width: CONFIG.SIZES.GEAR_SIZE, height: CONFIG.SIZES.GEAR_SIZE }}>
             <img ref={gearRef} src="/assets/clock_gears.png" alt="Gears" style={styles.imageFit} />
           </div>
@@ -197,6 +218,10 @@ export default function CountdownClock() {
     </div>
   );
 }
+
+// ==========================================
+// 💅 STYLES
+// ==========================================
 
 const styles = {
   overlayContainer: {

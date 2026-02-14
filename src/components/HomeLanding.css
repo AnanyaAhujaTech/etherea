@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400&display=swap');
+
 .home-landing {
   position: relative;
-  height: 100vh;   /* reduce scroll space */
+  height: 100vh;
   width: 100%;
   overflow: hidden;
+  background: #000;
 }
-
 
 .landing-sticky {
   position: sticky;
@@ -21,6 +23,7 @@
   background-position: center;
   transform: scale(1.05);
   z-index: 1;
+  filter: brightness(0.8);
 }
 
 /* Starfield layer */
@@ -30,7 +33,7 @@
   z-index: 2;
 }
 
-/* Center content */
+/* Center content container */
 .landing-content {
   position: absolute;
   top: 45%;
@@ -38,23 +41,66 @@
   text-align: center;
   transform: translateY(-50%);
   z-index: 5;
-  color: rgb(255, 182, 118);
+  padding: 0 20px;
 }
 
-/* Title */
+/* Level 1: Taarangana presents */
+.landing-presents {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.6em;
+  color: rgb(167, 211, 255);
+  margin: 0 0 25px 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  opacity: 0; /* Handled by GSAP */
+}
+
+/* Level 2: ETHEREA */
 .landing-title {
-  font-size: 80px;
-  letter-spacing: 0.3em;
-  font-family: Georgia, serif;
-  margin: 0;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(60px, 12vw, 130px);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 10px 0;
+  
+  /* The Gradient */
+  background-image: linear-gradient(
+    45deg,
+    #bdd3f7 0%,
+    #d9e8fe 25%,
+    #d0e1fb 50%,
+    #cfdff8 75%,
+    #dbeef7 100%
+  );
+  
+  /* Clip background to text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Make text transparent so background shows through */
+  color: transparent; 
+  
+  /* Ensure gradient covers the text fully */
+  background-size: 200% auto;
+  background-position: center;
+  
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+  opacity: 0; /* Handled by GSAP */
 }
 
-/* Subtitle */
+/* Level 3: Where the Navrasa transcend */
 .landing-subtitle {
-  margin-top: 16px;
-  font-size: 22px;
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
   font-style: italic;
-  opacity: 0.85;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: rgb(253, 253, 253);
+  margin-top: 15px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+  opacity: 0; /* Handled by GSAP */
 }
 
 /* Scroll indicator */
@@ -63,21 +109,23 @@
   bottom: 40px;
   width: 100%;
   text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
   color: rgba(255,255,255,0.6);
   letter-spacing: 0.2em;
   z-index: 6;
 }
 
 .scroll-line {
-  width: 2px;
-  height: 30px;
-  background: rgba(255,255,255,0.4);
-  margin: 8px auto 0;
-  animation: pulse 1.5s infinite;
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.6));
+  margin: 12px auto 0;
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0% { opacity: 0.3; }
-  50% { opacity: 1; }
-  100% { opacity: 0.3; }
+  0% { opacity: 0.2; height: 30px; }
+  50% { opacity: 1; height: 45px; }
+  100% { opacity: 0.2; height: 30px; }
 }

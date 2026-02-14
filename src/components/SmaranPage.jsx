@@ -7,49 +7,44 @@ import questionsHeadingImg from './faq.png';
 import smaranHeadingImg from './smaran.png';
 
 // Import Card Images
-import image1 from './image1.png'; // Ensure these extensions match your actual files (jpg/png)
+import image1 from './image3.png'; 
 import image2 from './image2.png';
-import image3 from './image3.png';
-import image4 from './image1.png';
-import image5 from './image2.png';
+import image3 from './image1.png';
+import image4 from './image4.png';
+import image5 from './image5.png';
 
 const smaranCards = [
   {
     id: "01",
-    title: "Opening Ceremony",
-    desc: "A thousand lanterns light the night sky.",
-    color: "rgba(184, 134, 11, 0.85)", // Increased opacity for overlay effect
-    glow: "rgba(255, 215, 0, 0.6)",
+    desc: "Courtesy of Prekshya",
+    color: "rgba(139, 69, 19, 0.85)", 
+    glow: "rgba(205, 92, 92, 0.6)",
     image: image1,
   },
   {
     id: "02",
-    title: "Rasa Dance",
-    desc: "Performers embody emotion in flux.",
-    color: "rgba(139, 69, 19, 0.85)", 
-    glow: "rgba(205, 92, 92, 0.6)",
+    desc: "Courtesy of Prekshya",
+    color: "rgba(184, 134, 11, 0.85)", 
+    glow: "rgba(255, 215, 0, 0.6)",
     image: image2,
   },
   {
     id: "03",
-    title: "Cosmic Music",
-    desc: "Silent sunrise on mountain peaks.",
+    desc: "Courtesy of Prekshya",
     color: "rgba(47, 79, 79, 0.85)", 
     glow: "rgba(64, 224, 208, 0.6)",
     image: image3,
   },
   {
     id: "04",
-    title: "Art Installation",
-    desc: "Interactive sound and light.",
+    desc: "Courtesy of Prekshya",
     color: "rgba(25, 25, 112, 0.85)", 
     glow: "rgba(65, 105, 225, 0.6)",
     image: image4,
   },
   {
     id: "05",
-    title: "Closing Night",
-    desc: "Unity under stars, hearts intertwined.",
+    desc: "Courtesy of Prekshya",
     color: "rgba(75, 0, 130, 0.85)", 
     glow: "rgba(138, 43, 226, 0.6)",
     image: image5,
@@ -85,6 +80,7 @@ const questions = [
 
 export default function SmaranPage() {
   const [activeQuestion, setActiveQuestion] = useState(null);
+  const [hoveredQuestion, setHoveredQuestion] = useState(null);
 
   const toggleQuestion = (index) => {
     setActiveQuestion(activeQuestion === index ? null : index);
@@ -117,17 +113,18 @@ export default function SmaranPage() {
               {/* Background Image */}
               <img 
                 src={card.image} 
-                alt={card.title} 
+                alt={card.desc} 
                 className="card-bg-image" 
               />
               
-              {/* Color Overlay to ensure text readability */}
+              {/* Color Overlay */}
               <div className="card-overlay"></div>
 
               <div className="card-inner">
                 <span className="card-number">{card.id}</span>
                 <div className="card-content">
-                  <h4>{card.title}</h4>
+                  {/* Title Removed as per previous logic, mapped desc */}
+                  <h4>{card.id}</h4> 
                   <p>{card.desc}</p>
                 </div>
               </div>
@@ -149,22 +146,55 @@ export default function SmaranPage() {
 
         <div className="faq-list">
           {questions.map((item, index) => {
+            // Cycle through colors
             const colorObj = smaranCards[index % smaranCards.length];
+            
+            // Check state
+            const isActive = activeQuestion === index;
+            const isHovered = hoveredQuestion === index;
+            const isHighlighted = isActive || isHovered;
+
+            // Extract glow color for shadows
+            const glowColor = colorObj.glow; // e.g., "rgba(255, 215, 0, 0.6)"
+
             return (
               <div 
                 key={index} 
-                className={`faq-item ${activeQuestion === index ? 'active' : ''}`}
+                className={`faq-item ${isActive ? 'active' : ''}`}
                 onClick={() => toggleQuestion(index)}
+                onMouseEnter={() => setHoveredQuestion(index)}
+                onMouseLeave={() => setHoveredQuestion(null)}
                 style={{
-                  '--faq-bg': colorObj.color,
-                  '--faq-border': colorObj.glow
+                  // 1. Border: Always the specific color
+                  borderColor: glowColor.replace('0.6', '0.9'), // Make border slightly more opaque
+
+                  // 2. Dynamic Box Shadow
+                  // - Highlighted: Strong outer glow + Inner glow
+                  // - Normal: Faint outer glow
+                  boxShadow: isHighlighted 
+                    ? `0 0 25px ${glowColor}, inset 0 0 15px ${glowColor}`
+                    : `0 0 6px ${glowColor.replace('0.6', '0.2')}, inset 0 0 0px transparent`,
+
+                  // 3. Dynamic Background
+                  // - Highlighted: Radial gradient fill ("Power Up")
+                  // - Normal: Dark linear gradient
+                  background: isHighlighted
+                    ? `radial-gradient(circle at center, ${glowColor.replace('0.6', '0.25')} 0%, rgba(20,20,20,0.95) 70%)`
+                    : `linear-gradient(145deg, rgba(20,20,20,0.9) 0%, rgba(30,30,30,0.8) 100%)`,
+
+                  // 4. Scale effect
+                  transform: isHighlighted ? "scale(1.015)" : "scale(1)",
                 }}
               >
+                {/* Noise Texture Overlay */}
+                <div className="faq-noise-overlay" />
+
                 <div className="faq-question">
                   <span>{item.q}</span>
                   <div className="faq-chevron"></div>
                 </div>
-                <div className="faq-answer">
+                
+                <div className={`faq-answer ${isActive ? 'open' : ''}`}>
                   <p>{item.a}</p>
                 </div>
               </div>

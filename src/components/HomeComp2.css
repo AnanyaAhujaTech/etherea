@@ -32,19 +32,19 @@
 }
 
 .festival__title span {
-  color: #d4a843;
+  color: rgb(167, 211, 255);
   font-style: italic;
 }
 
 .festival__description {
-  color: #8892a5;
-  font-size: 1.125rem;
+  color: #afcbff;
+  font-size: 1.4rem;
   line-height: 1.75;
   max-width: 520px;
 }
 
 .festival__quote {
-  color: rgba(136, 146, 165, 0.7);
+  color: rgba(210, 226, 255, 0.7);
   font-style: italic;
   font-size: 1.125rem;
   max-width: 520px;

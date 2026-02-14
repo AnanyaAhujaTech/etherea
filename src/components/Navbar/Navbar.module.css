@@ -1,9 +1,9 @@
 :root {
-  --copper-rgb: 184, 115, 51;
+  --copper-rgb: 121, 188, 255;
   --glass-bg: rgba(var(--copper-rgb), 0.15);
   --glass-border: rgba(var(--copper-rgb), 0.4);
-  --glass-shadow: rgba(0, 0, 0, 0.2);
-  --text-color: #edcbab;
+  --glass-shadow: rgba(0, 0, 0, 0.435);
+  --text-color: rgba(121, 188, 255);
   --text-hover: #ffffff;
 }
 

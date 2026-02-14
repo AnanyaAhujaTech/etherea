@@ -59,10 +59,10 @@
 
 .events-heading {
   position: absolute;
-  top: 5%;       /* move vertically */
-  left: 27%;       /* moves into the black space */
-  width: 620px;   /* adjust size */
-  height: 400px;
+  top: 25%;       /* move vertically */
+  left: 35%;       /* moves into the black space */
+  width: 450px;   /* adjust size */
+  height: auto;
 
   z-index: 5;     /* above masks */
   pointer-events: none;

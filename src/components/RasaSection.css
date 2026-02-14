@@ -16,12 +16,12 @@
   font-size: 3.2rem;
   font-weight: 700;
   color: #ffffff;
-  margin: 0 0 16px 0;
+  margin: 13px 0 16px 0;
   letter-spacing: -0.5px;
 }
 
 .rasa-title span {
-  color: #f5c542;
+  color: rgb(167, 211, 255);
 }
 
 .rasa-subtitle {
