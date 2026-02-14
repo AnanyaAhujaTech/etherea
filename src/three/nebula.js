@@ -17,7 +17,7 @@ export function createNebula() {
   const group = new THREE.Group();
   const texture = createPuffTexture();
   
-  const colors = ["hsl(264, 100%, 45%)", "#0346fe", "#ffc005", "#34005a", "#00494d", "#002651", "#002b1e"];
+  const colors = ["hsl(264, 100%, 45%)", "#0346fe", "#34005a", "#00a239", "#005126", "#002b1e"];
   const puffCount = 250; 
 
   for (let i = 0; i < puffCount; i++) {
