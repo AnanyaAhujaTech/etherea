@@ -7,6 +7,13 @@ import {
   TICK_SETTINGS 
 } from "../config/timeConfig";
 
+// Helper to fix paths on GitHub Pages
+const getAssetPath = (path) => {
+  // Removes the leading slash if present to avoid double slashes
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${import.meta.env.BASE_URL}${cleanPath}`;
+};
+
 // ==========================================
 // 🎛️ CONTROL PANEL (VISUAL STYLES)
 // ==========================================
@@ -17,7 +24,8 @@ const CONFIG = {
 
   // 2. HEADING SETTINGS
   HEADING: {
-    PATH: "/assets/countdown.png",
+    // FIX: Use helper function for path
+    PATH: getAssetPath("assets/countdown.png"),
     WIDTH: "clamp(250px, 15vmin, 600px)",
     MARGIN_BOTTOM: "60px",
     OPACITY: 1.0, 
@@ -57,7 +65,6 @@ export default function CountdownClock() {
   const segmentsRef = useRef(null);
 
   // Configuration for start/end points on the ring
-  // These keys must match the keys in timeConfig.js -> RING_SEGMENTS
   const START_MARKER = "Taking Shape";
   const END_MARKER = "The Moment You've Waited For...";
 
@@ -74,7 +81,6 @@ export default function CountdownClock() {
     // 2. The Animation Loop
     const tick = () => {
       // A. Update Main Hand (The Slow Progress Hand)
-      // This calculates the exact position between Feb 14 and Feb 24
       const mainRotation = getClockRotation(START_MARKER, END_MARKER);
       if (mainHandRef.current) {
         gsap.set(mainHandRef.current, { rotation: mainRotation });
@@ -91,7 +97,7 @@ export default function CountdownClock() {
             rotation: visualRotation.current,
             duration: TICK_SETTINGS.DURATION,    
             ease: `back.out(${TICK_SETTINGS.ELASTICITY})`,
-            overwrite: true, // Ensures new ticks override old ones if user lags
+            overwrite: true,
           });
         }
         lastSecond.current = currentSecond;
@@ -102,7 +108,7 @@ export default function CountdownClock() {
       if (segmentsRef.current) gsap.set(segmentsRef.current, { rotation: "-=0.05" }); 
     };
 
-    // 3. Bind to GSAP Ticker (more efficient than setInterval)
+    // 3. Bind to GSAP Ticker
     gsap.ticker.add(tick);
 
     // 4. Cleanup on Unmount
@@ -170,13 +176,18 @@ export default function CountdownClock() {
         >
           {/* Layer 1: Segments (Rotating Background) */}
           <div style={{ ...styles.layerContainer, zIndex: 1, width: CONFIG.SIZES.SEGMENT_SCALE, height: CONFIG.SIZES.SEGMENT_SCALE }}>
-            <img ref={segmentsRef} src="/assets/clock_segments.png" alt="Segments" style={styles.imageFit} />
+            <img 
+              ref={segmentsRef} 
+              src={getAssetPath("assets/clock_segments.png")} 
+              alt="Segments" 
+              style={styles.imageFit} 
+            />
           </div>
 
           {/* Layer 2: Ring (Static with Glow) */}
           <div style={{ ...styles.layerContainer, zIndex: 2, width: CONFIG.SIZES.RING_SCALE, height: CONFIG.SIZES.RING_SCALE }}>
             <img 
-              src="/assets/clock_ring.png" 
+              src={getAssetPath("assets/clock_ring.png")} 
               alt="Ring" 
               style={{ ...styles.imageFit, filter: CONFIG.CLOCK_GLOW_FILTER }} 
             />
@@ -185,7 +196,7 @@ export default function CountdownClock() {
           {/* Layer 3: Frame */}
           <div style={{ ...styles.layerContainer, zIndex: 3, width: CONFIG.SIZES.FRAME_SCALE, height: CONFIG.SIZES.FRAME_SCALE }}>
             <img 
-              src="/assets/clock_frame.png" 
+              src={getAssetPath("assets/clock_frame.png")} 
               alt="Frame" 
               style={{ ...styles.imageFit, filter: CONFIG.CLOCK_GLOW_FILTER }} 
             />
@@ -194,7 +205,7 @@ export default function CountdownClock() {
           {/* Layer 4: Main Hand (Progress Tracker) */}
           <div ref={mainHandRef} style={{ ...styles.handContainer, zIndex: 4 }}>
             <img 
-              src="/assets/clock_hand.png" 
+              src={getAssetPath("assets/clock_hand.png")} 
               alt="Main Hand" 
               style={{ ...styles.handImage, height: CONFIG.SIZES.MAIN_HAND_LENGTH }} 
             />
@@ -203,7 +214,7 @@ export default function CountdownClock() {
           {/* Layer 5: Minute Hand (Visual Ticker) */}
           <div ref={minuteHandRef} style={{ ...styles.handContainer, zIndex: 5 }}>
             <img 
-              src="/assets/long_clock_hand.png" 
+              src={getAssetPath("assets/long_clock_hand.png")} 
               alt="Minute Hand" 
               style={{ ...styles.minuteHandImage, height: CONFIG.SIZES.MINUTE_HAND_LENGTH }} 
             />
@@ -211,7 +222,12 @@ export default function CountdownClock() {
 
           {/* Layer 6: Gears (Center Decoration) */}
           <div style={{ ...styles.centerPivot, zIndex: 6, width: CONFIG.SIZES.GEAR_SIZE, height: CONFIG.SIZES.GEAR_SIZE }}>
-            <img ref={gearRef} src="/assets/clock_gears.png" alt="Gears" style={styles.imageFit} />
+            <img 
+              ref={gearRef} 
+              src={getAssetPath("assets/clock_gears.png")} 
+              alt="Gears" 
+              style={styles.imageFit} 
+            />
           </div>
         </div>
       </div>
@@ -220,7 +236,7 @@ export default function CountdownClock() {
 }
 
 // ==========================================
-// 💅 STYLES
+// 💅 STYLES (Unchanged)
 // ==========================================
 
 const styles = {

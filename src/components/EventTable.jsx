@@ -1,5 +1,11 @@
 import React, { useRef, useState } from "react";
 
+// Helper to fix paths on GitHub Pages
+const getAssetPath = (path) => {
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${import.meta.env.BASE_URL}${cleanPath}`;
+};
+
 // Updated Data with "Neon" colors
 const scheduleData = [
   { type: "header", label: "Day - 1" },
@@ -92,7 +98,8 @@ export default function EventTable({ onReturnToClock, navHeight = "80px" }) {
         <div style={styles.headingContainer}>
           <div style={styles.headingGlow} />
           <img 
-            src="/assets/itinerary_heading.png" 
+            // FIX: Use corrected path
+            src={getAssetPath("assets/itinerary_heading.png")} 
             alt="Navrasa In Motion" 
             style={styles.headingImage} 
           />
@@ -134,15 +141,11 @@ export default function EventTable({ onReturnToClock, navHeight = "80px" }) {
                     borderColor: item.borderColor,
                     
                     // 2. Dynamic Box Shadow
-                    // - Hover: Strong outer glow + Inner glow
-                    // - Normal: Faint outer glow so it's not "colorless"
                     boxShadow: isHovered 
                       ? `0 0 25px ${item.glowColor}, inset 0 0 15px ${item.glowColor}`
                       : `0 0 6px ${item.glowColor.replace('0.6', '0.2')}, inset 0 0 0px transparent`,
 
                     // 3. Dynamic Background
-                    // - Hover: Radial gradient fill
-                    // - Normal: Dark glass linear gradient
                     background: isHovered
                       ? `radial-gradient(circle at center, ${item.glowColor.replace('0.6', '0.25')} 0%, rgba(20,20,20,0.95) 70%)`
                       : `linear-gradient(145deg, rgba(20,20,20,0.9) 0%, rgba(30,30,30,0.8) 100%)`,
