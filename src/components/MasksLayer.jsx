@@ -11,42 +11,92 @@ import shringar from "../assets/Shringar.png";
 import vibhatsa from "../assets/Vibhatsa.png";
 import veer from "../assets/Vir.png";
 
+// Configuration for every mask
 const masks = [
-  { src: adbhut, className: "mask m1", glow: "#7ef9ff" },
-  { src: bhayanak, className: "mask m2", glow: "#5cff7a" },
-  { src: hasya, className: "mask m3", glow: "#ffd54d" },
-  { src: karun, className: "mask m4", glow: "#8a7cff" },
-  { src: raudra, className: "mask m5", glow: "#ff3b3b" },
-
-  // White mask with reduced glow strength
   { 
-    src: shant, 
-    className: "mask m6", 
-    glow: "#ffffff",
-    glowSize: [4, 12, 20]   // smaller glow than others
+    id: 1,
+    src: vibhatsa, 
+    glow: "#4da6ff", 
+    width: "180px",
+    position: { top: "5%", left: "1.5%" }
   },
-
-  { src: shringar, className: "mask m7", glow: "#d16bff" },
-  { src: vibhatsa, className: "mask m8", glow: "#6aa0ff" },
-  { src: veer, className: "mask m9", glow: "#4da6ff" }
+  { 
+    id: 2,
+    src: bhayanak, 
+    glow: "#5cff7a", 
+    width: "230px",
+    position: { top: "5%", right: "1.5%" }
+  },
+  { 
+    id: 3,
+    src: hasya, 
+    glow: "#ffd54d", 
+    width: "450px",
+    position: { top: "22%", left: "12%" }
+  },
+  { 
+    id: 4,
+    src: karun, 
+    glow: "#8a7cff", 
+    width: "230px", // Customized size
+    position: { top: "44%", right: "1%" }
+  },
+  { 
+    id: 5,
+    src: shringar, 
+    glow: "#d16bff", 
+    width: "420px",
+    position: { bottom: "24%", left: "2%" }
+  },
+  { 
+    id: 6,
+    src: shant, 
+    glow: "#ffffff", 
+    glowSize: [4, 12, 20], // Custom softer glow
+    width: "320px",
+    position: { bottom: "6%", left: "22%" }
+  },
+  { 
+    id: 7,
+    src: veer, 
+    glow: "#6aa0ff", 
+    width: "400px",
+    position: { top: "23%", right: "13%" }
+  },
+  { 
+    id: 8,
+    src: raudra, 
+    glow: "#ff3b3b", 
+    width: "400px",
+    position: { bottom: "18%", left: "40%" }
+  },
+  { 
+    id: 9,
+    src: adbhut, 
+    glow: "#7ef9ff", 
+    width: "500px",
+    position: { bottom: "1%", right: "11%" }
+  }
 ];
 
 export default function MasksLayer() {
   return (
     <div className="masks-container">
       {masks.map((mask, index) => {
-        // Default glow sizes for normal masks
+        // Default glow sizes if not specified
         const glowSizes = mask.glowSize || [8, 22, 40];
 
         return (
           <motion.img
-            key={index}
+            key={mask.id}
             src={mask.src}
-            className={mask.className}
-            alt="mask"
-
-            /* Glow matching mask color */
+            className="mask"
+            alt={`mask-${mask.id}`}
+            
+            // Apply size, position, and filter via inline styles
             style={{
+              width: mask.width,
+              ...mask.position, // Spreads top, left, right, bottom
               filter: `
                 brightness(1.05)
                 drop-shadow(0 0 ${glowSizes[0]}px ${mask.glow})
@@ -55,10 +105,10 @@ export default function MasksLayer() {
               `
             }}
 
-            /* Start below screen */
+            /* Entrance Animation: Start below screen */
             initial={{ y: "100vh", opacity: 0 }}
 
-            /* Rise then float */
+            /* Float Animation: Rise up, then bob up and down */
             animate={{
               y: [0, -12, 0],
               opacity: 1
@@ -66,7 +116,7 @@ export default function MasksLayer() {
 
             transition={{
               y: {
-                delay: index * 0.25 + 0.8,
+                delay: index * 0.25 + 0.8, // Staggered start
                 duration: 3,
                 repeat: Infinity,
                 ease: "easeInOut"
@@ -77,7 +127,7 @@ export default function MasksLayer() {
               }
             }}
 
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.1, zIndex: 10 }}
           />
         );
       })}

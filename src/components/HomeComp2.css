@@ -1,9 +1,17 @@
+/* HomeComp2.css */
+
 .homecomp2 {
   min-height: 100vh;
   display: flex;
   align-items: center;
   overflow-x: hidden;
   padding: 80px 24px;
+  position: relative;
+  
+  /* --- ADDED OVERLAY --- */
+  /* This matches the gradient from SmaranPage */
+  background: radial-gradient(circle at center, rgba(17, 17, 17, 0.8) 0%, rgba(0, 0, 0, 0.60) 100%);
+  z-index: 1;
 }
 
 .homecomp2__container {
@@ -14,9 +22,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 64px;
   align-items: center;
+  position: relative;
+  z-index: 2; /* Ensures content sits above the overlay/background */
 }
 
-/* Festival Section */
+/* Festival Section (Left) */
 .festival {
   display: flex;
   flex-direction: column;
@@ -50,65 +60,22 @@
   max-width: 520px;
 }
 
-/* Navrasa */
-.navrasa {
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background-color: rgba(30, 36, 50, 0.5);
-  backdrop-filter: blur(12px);
-  padding: 40px;
-}
-
-.navrasa__title {
-  font-size: 1.75rem;
-  font-family: Georgia, serif;
-  text-align: center;
-  color: #e2e8f0;
-  margin-bottom: 32px;
-}
-
-.navrasa__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-}
-
-.navrasa__item {
+/* Video Section (Right) */
+.video-container {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
+  width: 100%;
+  position: relative;
 }
 
-.navrasa__dot {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-}
-
-.navrasa__name {
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: #e2e8f0;
-}
-
-.navrasa__meaning {
-  font-size: 0.75rem;
-  font-style: italic;
-  color: #8892a5;
-}
-
-.navrasa__footer {
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  text-align: center;
-}
-
-.navrasa__footer p {
-  font-size: 0.875rem;
-  color: #8892a5;
-  font-style: italic;
+.dance-video {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  object-fit: cover;
 }
 
 @media (max-width: 1024px) {
@@ -120,19 +87,4 @@
   .festival__title {
     font-size: 2.5rem;
   }
-}
-
-/* Right side muni image */
-.muni {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.muni__image {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  object-fit: contain;
 }

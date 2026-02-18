@@ -1,25 +1,47 @@
+/* Home.css */
+
+/* 1. The Main Scroll Container */
 .home-wrapper {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh; /* Must be fixed height to scroll internally */
+  overflow-y: scroll; /* Enable vertical scrolling */
   overflow-x: hidden;
+  
+  /* Scroll Snap Logic */
+  scroll-snap-type: y mandatory; /* Forces content to snap to points */
+  scroll-behavior: smooth;
+
+  /* Hide Scrollbar (Optional) */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
-/* Background image */
+.home-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* 2. Fixed Backgrounds (Must be outside the flow) */
 .background-image {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   filter: brightness(0.65);
   z-index: 0;
+  pointer-events: none;
 }
 
-/* Galaxy layer */
 .galaxy-layer {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
   pointer-events: none;
 }
@@ -29,18 +51,36 @@
   height: 100% !important;
 }
 
-/* Page content */
+/* 3. Content Layer Wrapper */
 .content-layer {
   position: relative;
   z-index: 2;
   color: white;
+  width: 100%;
 }
 
-/* Temporary hero styling */
-.home-hero {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+/* 4. Snap Sections */
+/* Every distinct section MUST have these properties */
+.snap-section {
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  scroll-snap-align: start; /* Snap the top of this div to the top of viewport */
+  position: relative;
+  overflow: hidden; 
+}
+
+/* 5. SPECIAL HANDLING FOR SMARAN PAGE 
+   SmaranPage has a wrapper (.smaran-container) and 2 internal sections (.smaran-section).
+   If we treat SmaranPage as one block, it will be 200vh tall and break snapping.
+   display: contents makes the browser "unwrap" the container, so the 
+   internal .smaran-sections become direct children of the scroll container.
+*/
+.smaran-container {
+  display: contents;
+}
+
+/* Ensure Smaran's internal sections snap too */
+.smaran-section {
+  scroll-snap-align: start;
+  height: 100vh; /* Enforce height */
 }

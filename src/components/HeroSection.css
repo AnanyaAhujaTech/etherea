@@ -1,10 +1,11 @@
+/* HeroSection.css */
 .hero {
   position: relative;
   height: 100vh;
   width: 100%;
   overflow: hidden;
 
-  /* no vertical centering needed now */
+  /* Flex centering */
   display: flex;
   justify-content: center;
 }
@@ -26,7 +27,7 @@
   pointer-events: none;
 }
 
-/* Pulsating silver glow */
+/* Optional: Silver pulse for the girl (if you uncomment her later) */
 @keyframes silverPulse {
   0%, 100% {
     filter:
@@ -42,28 +43,30 @@
 
 .girl-silhouette {
   position: absolute;
-  bottom: 0;            /* anchors to bottom */
+  bottom: 0;
   left: 50%;
-  transform: translateX(-50%);  /* keeps centered */
-
-  height: 95vh;         /* slightly less than 100vh prevents cropping */
+  transform: translateX(-50%);
+  height: 95vh;
   width: auto;
   object-fit: contain;
-
   z-index: 2;
   pointer-events: none;
-
   animation: silverPulse 3.5s ease-in-out infinite;
 }
 
-
+/* --- HEADING STYLES --- */
 .events-heading {
   position: absolute;
-  top: 25%;       /* move vertically */
-  left: 35%;       /* moves into the black space */
-  width: 450px;   /* adjust size */
+  top: 25%;
+  left: 35%;
+  width: 450px;
   height: auto;
 
-  z-index: 5;     /* above masks */
+  z-index: 5;
   pointer-events: none;
+
+  /* Golden Glow Effect */
+  /* Layer 1: Sharp bright inner glow (#ffeb3b) */
+  /* Layer 2: Softer, wider outer glow (#ffc107) */
+  filter: drop-shadow(0 0 5px #ffeb3b) drop-shadow(0 0 20px #ffc107);
 }

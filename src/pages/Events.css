@@ -1,39 +1,65 @@
-.events-wrapper {
+/* Events.css */
+
+/* Main scrollable container */
+.events-container {
   position: relative;
-  bottom:0%;
   width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
+  height: 100vh; /* Limits view to screen height */
+  overflow-y: scroll; /* Enables scrolling inside this div */
+  scroll-snap-type: y mandatory; /* Forces snapping */
+  scroll-behavior: smooth;
+  
+  /* Hide scrollbar for cleaner look */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
-/* Background image */
+/* Hide scrollbar for Chrome/Safari/Opera */
+.events-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Background image - Fixed behind content */
 .background-image {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   filter: brightness(0.65);
-  z-index: 0; /* bottom layer */
+  z-index: 0;
+  pointer-events: none;
 }
 
-/* Galaxy layer wrapper */
+/* Galaxy layer - Fixed behind content */
 .galaxy-layer {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
   pointer-events: none;
 }
 
-/* Ensure canvas fills wrapper */
 .galaxy-layer canvas {
   width: 100% !important;
   height: 100% !important;
 }
 
-/* All visible page content */
-.content-layer {
+/* Individual Full-Screen Sections */
+.event-section {
   position: relative;
-  z-index: 2;
-  color: white;
+  width: 100%;
+  height: 100vh; /* Forces full height */
+  scroll-snap-align: start; /* Snaps to top of this section */
+  z-index: 2; /* Sits above galaxy/bg */
+  
+  /* Flex centering ensures content is centered if needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

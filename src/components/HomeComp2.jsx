@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./HomeComp2.css";
-import muni from "../assets/muni.png";
+import danceVideo from "../assets/bharatnatyam.mp4"; 
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,21 +15,20 @@ const FestivalSection = () => {
 
     gsap.fromTo(
       el,
-      { x: -200, opacity: 0 },
+      { x: -100, opacity: 0 },
       {
         x: 0,
         opacity: 1,
-        duration: 1,
+        duration: 1.2,
         ease: "power3.out",
         scrollTrigger: {
           trigger: el,
+          scroller: ".home-wrapper", // <--- ADDED: Watches the specific scroll container
           start: "top 80%",
-          toggleActions: "play none play reset"
+          toggleActions: "play none none reverse"
         }
       }
     );
-
-    ScrollTrigger.refresh();
   }, []);
 
   return (
@@ -53,8 +52,8 @@ const FestivalSection = () => {
   );
 };
 
-/* RIGHT: Muni Image */
-const MuniSection = () => {
+/* RIGHT: Dance Video */
+const DanceVideoSection = () => {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -62,26 +61,34 @@ const MuniSection = () => {
 
     gsap.fromTo(
       el,
-      { x: 200, opacity: 0 },
+      { x: 100, opacity: 0 },
       {
         x: 0,
         opacity: 1,
-        duration: 1,
+        duration: 1.2,
         ease: "power3.out",
         scrollTrigger: {
           trigger: el,
+          scroller: ".home-wrapper", // <--- ADDED: Watches the specific scroll container
           start: "top 80%",
-          toggleActions: "play none play reset"
+          toggleActions: "play none none reverse"
         }
       }
     );
-
-    ScrollTrigger.refresh();
   }, []);
 
   return (
-    <div ref={ref} className="muni">
-      <img src={muni} alt="Muni Illustration" className="muni__image" />
+    <div ref={ref} className="video-container">
+      <video 
+        className="dance-video"
+        autoPlay 
+        loop 
+        muted 
+        playsInline 
+      >
+        <source src={danceVideo} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
     </div>
   );
 };
@@ -91,7 +98,7 @@ export default function HomeComp2() {
     <section className="homecomp2">
       <div className="homecomp2__container">
         <FestivalSection />
-        <MuniSection />
+        <DanceVideoSection />
       </div>
     </section>
   );

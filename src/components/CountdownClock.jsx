@@ -9,7 +9,6 @@ import {
 
 // Helper to fix paths on GitHub Pages
 const getAssetPath = (path) => {
-  // Removes the leading slash if present to avoid double slashes
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   return `${import.meta.env.BASE_URL}${cleanPath}`;
 };
@@ -24,7 +23,6 @@ const CONFIG = {
 
   // 2. HEADING SETTINGS
   HEADING: {
-    // FIX: Use helper function for path
     PATH: getAssetPath("assets/countdown.png"),
     WIDTH: "clamp(250px, 15vmin, 600px)",
     MARGIN_BOTTOM: "60px",
@@ -59,6 +57,7 @@ const CONFIG = {
 
 export default function CountdownClock() {
   // References to DOM elements
+  const containerRef = useRef(null); // <--- NEW: Ref for the whole container
   const mainHandRef = useRef(null);
   const minuteHandRef = useRef(null);
   const gearRef = useRef(null);
@@ -73,12 +72,36 @@ export default function CountdownClock() {
   const visualRotation = useRef(getInitialRotation());
 
   useEffect(() => {
-    // 1. Set initial state immediately to avoid layout thrashing
+    // ---------------------------------------------
+    // 1. ENTRY ANIMATION (Fade In)
+    // ---------------------------------------------
+    if (containerRef.current) {
+      gsap.fromTo(
+        containerRef.current,
+        { 
+          opacity: 0, 
+          scale: 0.95 // Starts slightly smaller for a "breathing" in effect
+        }, 
+        { 
+          opacity: 1, 
+          scale: 1, 
+          duration: 2.5, // Slow duration
+          ease: "power2.out",
+          delay: 0.2 // Small delay to ensure render is ready
+        }
+      );
+    }
+
+    // ---------------------------------------------
+    // 2. SETUP CLOCK STATE
+    // ---------------------------------------------
     if (minuteHandRef.current) {
       gsap.set(minuteHandRef.current, { rotation: visualRotation.current });
     }
 
-    // 2. The Animation Loop
+    // ---------------------------------------------
+    // 3. THE ANIMATION LOOP (Ticker)
+    // ---------------------------------------------
     const tick = () => {
       // A. Update Main Hand (The Slow Progress Hand)
       const mainRotation = getClockRotation(START_MARKER, END_MARKER);
@@ -108,10 +131,10 @@ export default function CountdownClock() {
       if (segmentsRef.current) gsap.set(segmentsRef.current, { rotation: "-=0.05" }); 
     };
 
-    // 3. Bind to GSAP Ticker
+    // Bind to GSAP Ticker
     gsap.ticker.add(tick);
 
-    // 4. Cleanup on Unmount
+    // Cleanup on Unmount
     return () => {
       gsap.ticker.remove(tick);
     };
@@ -120,12 +143,14 @@ export default function CountdownClock() {
   return (
     <div style={styles.overlayContainer}>
       <div 
+        ref={containerRef} // <--- NEW: Attached ref here
         style={{ 
           display: 'flex', 
           flexDirection: 'column', 
           alignItems: 'center',
           transform: `translateY(${CONFIG.VERTICAL_OFFSET})`,
-          position: 'relative'
+          position: 'relative',
+          opacity: 0, // <--- NEW: Initial state hidden (handled by GSAP, but good fallback)
         }}
       >
         

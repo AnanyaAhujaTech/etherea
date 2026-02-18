@@ -15,17 +15,17 @@ const STYLE_CONFIG = {
   photoRadius: '0px',         
 };
 
-// 🎨 LEVEL GLOW COLORS (RGB values for easy opacity manipulation)
+// 🎨 LEVEL GLOW COLORS (RGB values)
 const LEVEL_COLORS = {
-  1: '255, 215, 0',    // Golden
-  2: '192, 192, 192',  // Silver
-  3: '64, 224, 208',   // Turquoise
-  4: '255, 0, 0',      // Red
-  5: '0, 0, 255',      // Blue
-  6: '128, 0, 128',    // Purple
-  7: '0, 0, 255',      // Blue
-  8: '128, 0, 128',    // Purple
-  9: '0, 128, 0',      // Green
+  1: '255, 215, 0',    // Golden (Core Team)
+  2: '192, 192, 192',  // Silver (Skipped)
+  3: '64, 224, 208',   // Turquoise (Website)
+  4: '255, 0, 0',      // Red (Events)
+  5: '0, 0, 255',      // Blue (PR)
+  6: '128, 0, 128',    // Purple (Creative)
+  7: '0, 0, 255',      // Blue (HR)
+  8: '128, 0, 128',    // Purple (Sponsorship)
+  9: '0, 128, 0',      // Green (Socials)
 };
 
 // Helper to resolve images
@@ -35,6 +35,7 @@ const getAsset = (name) => {
 
 // 🟢 SHAPE DEFINITIONS
 const SHAPES = {
+  // Heart Polygon for Core Team
   HEART: 'polygon(50% 15%, 65% 5%, 85% 5%, 100% 30%, 85% 65%, 50% 95%, 15% 65%, 0% 30%, 15% 5%, 35% 5%)',
   RECTANGLE: 'inset(2% 2% 2% 2%)',
   OVAL: 'ellipse(50% 50% at 50% 50%)', 
@@ -42,22 +43,24 @@ const SHAPES = {
 
 // Team Hierarchy Definitions
 const TEAM_STRUCTURE = [
-  { id: 'president', label: 'President', count: 1, clipPath: SHAPES.HEART },
-  { id: 'core', label: 'Core Team', count: 3, clipPath: SHAPES.OVAL },              
-  { id: 'website', label: 'Website', count: 2, clipPath: SHAPES.RECTANGLE },
-  { id: 'events', label: 'Event Management', count: 6, clipPath: SHAPES.OVAL },
-  { id: 'pr', label: 'PR & Security', count: 5, clipPath: SHAPES.RECTANGLE },
-  { id: 'creative', label: 'Creative', count: 2, clipPath: SHAPES.RECTANGLE },
-  { id: 'hr', label: 'HR & Logistics', count: 6, clipPath: SHAPES.OVAL },
-  { id: 'sponsorship', label: 'Sponsorship', count: 4, clipPath: SHAPES.RECTANGLE },
-  { id: 'socials', label: 'Social Media', count: 2, clipPath: SHAPES.RECTANGLE },
+  // Core Team: Visual Level 1 (Gold) & Heart Shape
+  { id: 'core', label: 'Core Team', count: 4, clipPath: SHAPES.HEART, visualLevel: 1 },              
+  
+  // Subsequent teams
+  { id: 'website', label: 'Website', count: 2, clipPath: SHAPES.RECTANGLE, visualLevel: 3 },
+  { id: 'events', label: 'Event Management', count: 6, clipPath: SHAPES.OVAL, visualLevel: 4 },
+  { id: 'pr', label: 'PR & Security', count: 5, clipPath: SHAPES.RECTANGLE, visualLevel: 5 },
+  { id: 'creative', label: 'Creative', count: 2, clipPath: SHAPES.RECTANGLE, visualLevel: 6 },
+  { id: 'hr', label: 'HR & Logistics', count: 6, clipPath: SHAPES.OVAL, visualLevel: 7 },
+  { id: 'sponsorship', label: 'Sponsorship', count: 4, clipPath: SHAPES.RECTANGLE, visualLevel: 8 },
+  { id: 'socials', label: 'Social Media', count: 2, clipPath: SHAPES.RECTANGLE, visualLevel: 9 },
 ];
 
 // Generate Data
 let globalMemberCounter = 1;
 
-const TEAMS = TEAM_STRUCTURE.map((team, index) => {
-  const levelNumber = index + 1;
+const TEAMS = TEAM_STRUCTURE.map((team) => {
+  const levelNumber = team.visualLevel;
 
   const members = Array.from({ length: team.count }).map(() => {
     const memberId = globalMemberCounter;
@@ -78,7 +81,7 @@ const TEAMS = TEAM_STRUCTURE.map((team, index) => {
 });
 
 // ==========================================
-// 🃏 CARD COMPONENT (With 3D Effect & Glow)
+// 🃏 CARD COMPONENT
 // ==========================================
 
 const MemberCard = ({ member, isGrid, cardWidth }) => {
@@ -101,7 +104,6 @@ const MemberCard = ({ member, isGrid, cardWidth }) => {
     setRotate({ x: 0, y: 0 }); 
   };
 
-  // Determine Glow Color
   const glowRgb = LEVEL_COLORS[member.level] || '255, 255, 255';
 
   return (
@@ -124,15 +126,12 @@ const MemberCard = ({ member, isGrid, cardWidth }) => {
         style={{
           ...styles.cardVisualWrapper,
           transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale(${isHovered ? 1.02 : 1})`,
-          // Colored Glow Logic
           boxShadow: isHovered 
             ? `0 20px 50px rgba(${glowRgb}, 0.6), 0 0 20px rgba(${glowRgb}, 0.4)` 
             : `0 10px 20px rgba(0,0,0,0.3), 0 0 10px rgba(${glowRgb}, 0.2)`,       
           border: isHovered ? `1px solid rgba(${glowRgb}, 0.3)` : '1px solid transparent',
         }}
       >
-        
-        {/* Background Layer */}
         <div
           style={{
             ...styles.layer,
@@ -143,7 +142,6 @@ const MemberCard = ({ member, isGrid, cardWidth }) => {
           }}
         />
 
-        {/* Content Wrapper */}
         <div style={styles.contentWrapper}>
           <div style={styles.frameAssembly}>
             <div style={{
@@ -180,9 +178,9 @@ const Team = ({ navHeight }) => {
   const [activeSection, setActiveSection] = useState(TEAMS[0].id);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
-  // Refs for Scroll Observation & Hover Timing
+  // Refs
   const sectionRefs = useRef({});
-  const hoverTimeoutRef = useRef(null); // 🟢 Timer for bridging the gap
+  const hoverTimeoutRef = useRef(null); 
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -210,14 +208,12 @@ const Team = ({ navHeight }) => {
     }
   };
 
-  // 🟢 HOVER HANDLERS
   const handleMouseEnter = () => {
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     setIsSidebarOpen(true);
   };
 
   const handleMouseLeave = () => {
-    // Small delay to allow user to move between podium and sidebar without it closing
     hoverTimeoutRef.current = setTimeout(() => {
       setIsSidebarOpen(false);
     }, 200); 
@@ -236,7 +232,7 @@ const Team = ({ navHeight }) => {
       {/* 🟢 SIDEBAR NAVIGATION */}
       <nav 
         style={styles.sidebarContainer}
-        onMouseEnter={handleMouseEnter} // Keep open when hovering list
+        onMouseEnter={handleMouseEnter} 
         onMouseLeave={handleMouseLeave}
       >
         {TEAMS.map((team, index) => {
@@ -248,13 +244,11 @@ const Team = ({ navHeight }) => {
               onClick={() => handleSidebarClick(team.id)}
               style={{
                 ...styles.sidebarItem,
-                // Cascade Animation Logic
                 opacity: isSidebarOpen ? 1 : 0,
                 transform: isSidebarOpen ? 'translateY(0)' : 'translateY(20px)',
                 pointerEvents: isSidebarOpen ? 'auto' : 'none',
                 transitionDelay: `${reverseIndex * 50}ms`,
                 
-                // Active State Styling
                 borderRight: activeSection === team.id ? '3px solid #79bcff' : '3px solid transparent',
                 textShadow: activeSection === team.id ? '0 0 10px rgba(121, 188, 255, 0.8)' : 'none',
                 color: activeSection === team.id ? '#fff' : 'rgba(255,255,255,0.6)',
@@ -266,18 +260,25 @@ const Team = ({ navHeight }) => {
         })}
       </nav>
 
-      {/* 🟢 PODIUM TOGGLE (HOVER TRIGGER) */}
+      {/* 🟢 PODIUM TOGGLE (Modified Logic) */}
       <div 
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        style={styles.podiumContainer}
+        style={{
+            ...styles.podiumContainer,
+            // ⬇️ LOGIC: Hide (Push Down) if activeSection is 'core', else Show (Rise Up)
+            transform: activeSection === 'core' ? 'translateY(150%)' : 'translateY(0%)',
+            opacity: activeSection === 'core' ? 0 : 1,
+            pointerEvents: activeSection === 'core' ? 'none' : 'auto',
+            // Add a springy transition for the rising effect
+            transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease',
+        }}
       >
         <img 
           src={getAsset('podium.png')} 
           alt="Menu" 
           style={{
             ...styles.podiumImage,
-            // Glows if sidebar is open (which equals being hovered)
             filter: isSidebarOpen 
               ? 'brightness(1.2) drop-shadow(0 0 15px gold)' 
               : 'none'
@@ -374,8 +375,7 @@ const styles = {
     flexDirection: 'column', 
     gap: '0.5rem',
     alignItems: 'flex-end',
-    pointerEvents: 'none', // Allows clicks to pass through when hidden/empty areas
-    // Note: Children (buttons) set pointerEvents to 'auto' when visible
+    pointerEvents: 'none',
   },
   sidebarItem: {
     background: 'transparent',
@@ -402,7 +402,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transition: 'transform 0.2s ease',
+    // Transformation logic is handled in JSX style prop for dynamic updates
   },
   podiumImage: {
     width: '100%',
