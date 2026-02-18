@@ -9,6 +9,7 @@ import SponsorsPage from "./components/Sponsors/SponsorsPage";
 // --- Pages ---
 import Home from "./pages/Home";
 import Events from "./pages/Events";
+import Team from "./pages/Team"; // <--- NEW IMPORT
 
 // --- Three.js ---
 import { initScene } from "./three/initScene";
@@ -86,9 +87,7 @@ export default function App() {
 
   return (
     <>
-      {/* GLOBAL CSS RESET 
-        This style block forces the body margin to 0 to remove white outlines.
-      */}
+      {/* GLOBAL CSS RESET */}
       <style>
         {`
           body, html {
@@ -96,8 +95,8 @@ export default function App() {
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #050505; /* Matches app background */
-            overflow-x: hidden; /* Prevent horizontal scrollbars */
+            background-color: #050505;
+            overflow-x: hidden;
           }
           * {
             box-sizing: border-box;
@@ -112,6 +111,7 @@ export default function App() {
         {activePage === "events" && <Events navHeight={NAV_HEIGHT} />}
         {activePage === "sponsors" && <SponsorsPage navHeight={NAV_HEIGHT} />}
         {activePage === "itinerary" && <ItineraryPage navHeight={NAV_HEIGHT} />}
+        {activePage === "team" && <Team navHeight={NAV_HEIGHT} />} {/* <--- NEW ROUTE */}
       </main>
     </>
   );
@@ -119,7 +119,7 @@ export default function App() {
 
 const styles = {
   mainContainer: {
-    width: "100vw", // Changed from 100% to 100vw to ensure full viewport width
+    width: "100vw",
     minHeight: "100vh",
     backgroundColor: "#050505",
     overflowX: "hidden",
@@ -127,7 +127,7 @@ const styles = {
   // --- Itinerary Styles ---
   itineraryWrapper: {
     position: 'relative',
-    width: '100vw', // Changed to 100vw
+    width: '100vw',
     height: '100vh',
     overflow: 'hidden',
   },
@@ -150,7 +150,7 @@ const styles = {
     scrollbarWidth: 'none',
   },
   snapSection: {
-    width: '100vw', // Ensure sections span full width
+    width: '100vw',
     height: '100vh',
     scrollSnapAlign: 'start',
     display: 'flex',

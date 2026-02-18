@@ -4,11 +4,13 @@ import styles from './Navbar.module.css';
 
 const Navbar = ({ onNavigate }) => {
   
+  // Added 'Team' to the list
   const navItems = [
     { label: 'Home', id: 'home' },
     { label: 'Events', id: 'events' },
     { label: 'Itinerary', id: 'itinerary' },
     { label: 'Sponsors', id: 'sponsors' },
+    { label: 'Team', id: 'team' }, 
   ];
 
   const handleNavClick = (e, id) => {
