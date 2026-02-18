@@ -441,7 +441,7 @@ const styles = {
   },
   frameAssembly: {
     position: 'relative',
-    height: '65%', 
+    height: '78%', 
     width: 'auto',
     maxWidth: '100%', 
     aspectRatio: '3/4', 
@@ -473,10 +473,10 @@ const styles = {
     objectFit: 'contain',
   },
   plateContainer: {
-    width: '85%',
+    width: '90%',
     height: 'auto',
     maxHeight: '20%',
-    maxWidth: '300px',
+    maxWidth: '350px',
     zIndex: 5,
     display: 'flex',
     alignItems: 'center',
