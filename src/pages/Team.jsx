@@ -179,7 +179,10 @@ const MemberCard = ({ member, isGrid, cardWidth }) => {
 const Team = ({ navHeight }) => {
   const [activeSection, setActiveSection] = useState(TEAMS[0].id);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  // Refs for Scroll Observation & Hover Timing
   const sectionRefs = useRef({});
+  const hoverTimeoutRef = useRef(null); // 🟢 Timer for bridging the gap
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -207,6 +210,19 @@ const Team = ({ navHeight }) => {
     }
   };
 
+  // 🟢 HOVER HANDLERS
+  const handleMouseEnter = () => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    setIsSidebarOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    // Small delay to allow user to move between podium and sidebar without it closing
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsSidebarOpen(false);
+    }, 200); 
+  };
+
   return (
     <div style={styles.pageWrapper}>
       {/* Fixed Global Background */}
@@ -218,7 +234,11 @@ const Team = ({ navHeight }) => {
       />
 
       {/* 🟢 SIDEBAR NAVIGATION */}
-      <nav style={styles.sidebarContainer}>
+      <nav 
+        style={styles.sidebarContainer}
+        onMouseEnter={handleMouseEnter} // Keep open when hovering list
+        onMouseLeave={handleMouseLeave}
+      >
         {TEAMS.map((team, index) => {
           const reverseIndex = TEAMS.length - 1 - index;
           
@@ -232,7 +252,7 @@ const Team = ({ navHeight }) => {
                 opacity: isSidebarOpen ? 1 : 0,
                 transform: isSidebarOpen ? 'translateY(0)' : 'translateY(20px)',
                 pointerEvents: isSidebarOpen ? 'auto' : 'none',
-                transitionDelay: `${reverseIndex * 50}ms`, // Staggered delay
+                transitionDelay: `${reverseIndex * 50}ms`,
                 
                 // Active State Styling
                 borderRight: activeSection === team.id ? '3px solid #79bcff' : '3px solid transparent',
@@ -246,9 +266,10 @@ const Team = ({ navHeight }) => {
         })}
       </nav>
 
-      {/* 🟢 PODIUM TOGGLE BUTTON */}
+      {/* 🟢 PODIUM TOGGLE (HOVER TRIGGER) */}
       <div 
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         style={styles.podiumContainer}
       >
         <img 
@@ -256,7 +277,10 @@ const Team = ({ navHeight }) => {
           alt="Menu" 
           style={{
             ...styles.podiumImage,
-            filter: isSidebarOpen ? 'brightness(1.2) drop-shadow(0 0 15px gold)' : 'none'
+            // Glows if sidebar is open (which equals being hovered)
+            filter: isSidebarOpen 
+              ? 'brightness(1.2) drop-shadow(0 0 15px gold)' 
+              : 'none'
           }} 
         />
       </div>
@@ -340,17 +364,18 @@ const styles = {
     zIndex: 1, 
   },
   
-  // 🟢 Sidebar is now Fixed and independent of Flexbox
+  // 🟢 Sidebar Styles
   sidebarContainer: {
     position: 'fixed',
-    bottom: '280px', // Adjusted to sit above the larger podium
+    bottom: '280px', 
     right: '2rem',
     zIndex: 100,
     display: 'flex',
     flexDirection: 'column', 
     gap: '0.5rem',
     alignItems: 'flex-end',
-    pointerEvents: 'none', 
+    pointerEvents: 'none', // Allows clicks to pass through when hidden/empty areas
+    // Note: Children (buttons) set pointerEvents to 'auto' when visible
   },
   sidebarItem: {
     background: 'transparent',
@@ -370,8 +395,8 @@ const styles = {
     position: 'fixed',
     bottom: '0px',
     right: '20px',
-    width: '180px',  // 🟢 INCREASED SIZE
-    height: 'auto', // 🟢 INCREASED SIZE
+    width: '180px',  
+    height: 'auto', 
     zIndex: 101, 
     cursor: 'pointer',
     display: 'flex',
