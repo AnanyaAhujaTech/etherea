@@ -1,22 +1,33 @@
+/* RasaSection.css */
+
 .rasa-container {
   position: relative;
-  min-height: 100vh;
+  height: 100vh; /* 🟢 Changed to exactly 100vh */
   width: 100%;
-  padding: 64px 16px;
+  
+  /* 🟢 Accounting for Navbar height so it visually centers perfectly */
+  padding: 80px 16px 0 16px; 
   box-sizing: border-box;
   font-family: Georgia, 'Times New Roman', serif;
+  
+  /* 🟢 Absolute Flexbox Centering */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centers vertically */
+  align-items: center;     /* Centers horizontally */
 }
 
 .rasa-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
+  width: 100%;
 }
 
 .rasa-title {
-  font-size: 3.2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #ffffff;
-  margin: 13px 0 16px 0;
+  margin: 0 0 8px 0;
   letter-spacing: -0.5px;
 }
 
@@ -25,22 +36,22 @@
 }
 
 .rasa-subtitle {
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #b0b8c8;
   font-style: italic;
   max-width: 600px;
   margin: 0 auto;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-/* GRID — widened so cards are bigger */
+/* GRID */
 .rasa-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-  max-width: 1400px;
-  margin: 0 auto;
+  gap: 20px; 
+  max-width: 1200px;
   width: 100%;
+  margin: 0; /* 🟢 Removed auto margin since flexbox now perfectly centers it */
 }
 
 /* CARD */
@@ -49,67 +60,64 @@
   background: rgba(20, 25, 45, 0.75);
   backdrop-filter: blur(8px);
   border: 2px solid var(--card-border);
-  border-radius: 12px;
-  padding: 30px;
+  border-radius: 10px;
+  padding: 20px;
   cursor: pointer;
   transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
   text-align: left;
   font-family: inherit;
   width: 100%;
   color: inherit;
-  min-height: 180px;
-
-  /* glow restored */
+  min-height: 140px; 
   box-shadow: 
-    0 8px 30px rgba(0,0,0,0.35),
-    0 0 28px var(--card-border);
+    0 4px 15px rgba(0,0,0,0.35),
+    0 0 15px var(--card-border);
 }
 
 .rasa-card:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
   background: rgba(30, 38, 65, 0.85);
-
-  /* stronger glow on hover */
   box-shadow: 
-    0 12px 40px rgba(0,0,0,0.45),
-    0 0 40px var(--card-border),
-    0 0 70px var(--card-border);
+    0 8px 25px rgba(0,0,0,0.45),
+    0 0 25px var(--card-border),
+    0 0 40px var(--card-border);
 }
 
 .rasa-card-icon {
   position: absolute;
-  right: 16px;
-  top: 16px;
-  width: 36px;
-  height: 36px;
+  right: 12px;
+  top: 12px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #8892a6;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .rasa-card-title {
-  font-size: 1.6rem;
+  font-size: 1.3rem; 
   font-weight: 700;
   color: #ffffff;
-  margin: 0 0 6px 0;
+  margin: 0 0 4px 0;
 }
 
 .rasa-card-rasa {
   font-style: italic;
-  font-size: 0.9rem;
-  margin: 0 0 14px 0;
+  font-size: 0.85rem;
+  margin: 0 0 10px 0;
   color: var(--rasa-color);
+  opacity: 0.9;
 }
 
 .rasa-card-desc {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #b0b8c8;
-  line-height: 1.5;
-  margin: 0 0 18px 0;
+  line-height: 1.4;
+  margin: 0 0 12px 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -120,8 +128,8 @@
 .rasa-card-meta {
   display: flex;
   align-items: center;
-  gap: 16px;
-  font-size: 0.8rem;
+  gap: 12px;
+  font-size: 0.75rem;
   color: #7a8494;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -133,11 +141,11 @@
 }
 
 .rasa-card-meta svg {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
 }
 
-/* Dialog overlay */
+/* --- DIALOG OVERLAY --- */
 .rasa-overlay {
   position: fixed;
   inset: 0;
@@ -188,28 +196,28 @@
 .rasa-dialog-icon {
   display: flex;
   justify-content: center;
-  padding: 32px 0 16px;
+  padding: 24px 0 16px;
 }
 
 .rasa-dialog-icon-circle {
-  width: 120px;
-  height: 120px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   background: linear-gradient(135deg, #1a1f35, #252b48);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
+  font-size: 2.5rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   border: 2px solid rgba(255, 255, 255, 0.08);
 }
 
 .rasa-dialog-body {
-  padding: 0 32px 32px;
+  padding: 0 24px 24px;
 }
 
 .rasa-dialog-title {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: #ffffff;
   margin: 0 0 4px 0;
@@ -224,8 +232,8 @@
 .rasa-dialog-meta {
   display: flex;
   align-items: center;
-  gap: 20px;
-  font-size: 0.875rem;
+  gap: 16px;
+  font-size: 0.85rem;
   color: #7a8494;
   margin-bottom: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -238,14 +246,14 @@
 }
 
 .rasa-dialog-meta svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
 .rasa-dialog-desc {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #b0b8c8;
-  line-height: 1.7;
+  line-height: 1.6;
   margin: 0 0 24px 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -254,33 +262,33 @@
   background: rgba(25, 30, 50, 0.6);
   border-left: 4px solid rgba(66, 158, 245, 0.5);
   border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 24px;
+  padding: 12px;
+  margin-bottom: 20px;
 }
 
 .rasa-why-title {
   font-style: italic;
   color: rgb(167, 211, 255);
-  font-size: 0.875rem;
-  margin: 0 0 8px 0;
+  font-size: 0.8rem;
+  margin: 0 0 6px 0;
 }
 
 .rasa-why-text {
   font-size: 0.85rem;
   color: #7a8494;
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .rasa-register-btn {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   background: rgb(167, 211, 255);
   color: #0f1225;
   border: none;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
@@ -291,4 +299,21 @@
 
 .rasa-register-btn:hover {
   opacity: 0.9;
+}
+
+/* RESPONSIVENESS */
+@media (max-width: 1024px) {
+  .rasa-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+  }
+}
+
+@media (max-width: 640px) {
+  .rasa-grid {
+    grid-template-columns: 1fr;
+  }
+  .rasa-title {
+    font-size: 2rem;
+  }
 }

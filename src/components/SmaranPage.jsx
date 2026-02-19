@@ -123,7 +123,6 @@ export default function SmaranPage() {
               <div className="card-inner">
                 <span className="card-number">{card.id}</span>
                 <div className="card-content">
-                  {/* Title Removed as per previous logic, mapped desc */}
                   <h4>{card.id}</h4> 
                   <p>{card.desc}</p>
                 </div>
@@ -155,7 +154,7 @@ export default function SmaranPage() {
             const isHighlighted = isActive || isHovered;
 
             // Extract glow color for shadows
-            const glowColor = colorObj.glow; // e.g., "rgba(255, 215, 0, 0.6)"
+            const glowColor = colorObj.glow; 
 
             return (
               <div 
@@ -165,25 +164,21 @@ export default function SmaranPage() {
                 onMouseEnter={() => setHoveredQuestion(index)}
                 onMouseLeave={() => setHoveredQuestion(null)}
                 style={{
-                  // 1. Border: Always the specific color
-                  borderColor: glowColor.replace('0.6', '0.9'), // Make border slightly more opaque
+                  // 1. Border
+                  borderColor: glowColor.replace('0.6', '0.9'), 
 
                   // 2. Dynamic Box Shadow
-                  // - Highlighted: Strong outer glow + Inner glow
-                  // - Normal: Faint outer glow
                   boxShadow: isHighlighted 
                     ? `0 0 25px ${glowColor}, inset 0 0 15px ${glowColor}`
                     : `0 0 6px ${glowColor.replace('0.6', '0.2')}, inset 0 0 0px transparent`,
 
                   // 3. Dynamic Background
-                  // - Highlighted: Radial gradient fill ("Power Up")
-                  // - Normal: Dark linear gradient
                   background: isHighlighted
                     ? `radial-gradient(circle at center, ${glowColor.replace('0.6', '0.25')} 0%, rgba(20,20,20,0.95) 70%)`
                     : `linear-gradient(145deg, rgba(20,20,20,0.9) 0%, rgba(30,30,30,0.8) 100%)`,
 
                   // 4. Scale effect
-                  transform: isHighlighted ? "scale(1.015)" : "scale(1)",
+                  transform: isHighlighted ? "scale(1.01)" : "scale(1)",
                 }}
               >
                 {/* Noise Texture Overlay */}

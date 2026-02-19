@@ -21,7 +21,7 @@ const events = [
   { id: 9, title: "Rangmancha", rasa: "Karuna", emotion: "Compassion", eventType: "Solo Acting", description: "Step into another's emotional reality through empathy, vulnerability, and deep human connection.", whyRasa: "Solo acting channels compassion by requiring the performer to deeply inhabit another's pain, joy, and emotional truth.", time: "Day 1, 11:00 AM", venue: "Auditorium", borderColor: "rgba(244,63,94,0.5)", rasaColor: "#fb7185", icon: "🎭" },
 ];
 
-export default function RasaComponent() {
+export default function RasaSection() {
   const [selected, setSelected] = useState(null);
 
   return (

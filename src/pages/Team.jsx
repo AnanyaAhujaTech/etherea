@@ -35,7 +35,6 @@ const getAsset = (name) => {
 
 // 🟢 SHAPE DEFINITIONS
 const SHAPES = {
-  // Heart Polygon for Core Team
   HEART: 'polygon(50% 15%, 65% 5%, 85% 5%, 100% 30%, 85% 65%, 50% 95%, 15% 65%, 0% 30%, 15% 5%, 35% 5%)',
   RECTANGLE: 'inset(2% 2% 2% 2%)',
   OVAL: 'ellipse(50% 50% at 50% 50%)', 
@@ -43,10 +42,7 @@ const SHAPES = {
 
 // Team Hierarchy Definitions
 const TEAM_STRUCTURE = [
-  // Core Team: Visual Level 1 (Gold) & Heart Shape
   { id: 'core', label: 'Core Team', count: 4, clipPath: SHAPES.HEART, visualLevel: 1 },              
-  
-  // Subsequent teams
   { id: 'website', label: 'Website', count: 2, clipPath: SHAPES.RECTANGLE, visualLevel: 3 },
   { id: 'events', label: 'Event Management', count: 6, clipPath: SHAPES.OVAL, visualLevel: 4 },
   { id: 'pr', label: 'PR & Security', count: 5, clipPath: SHAPES.RECTANGLE, visualLevel: 5 },
@@ -61,11 +57,9 @@ let globalMemberCounter = 1;
 
 const TEAMS = TEAM_STRUCTURE.map((team) => {
   const levelNumber = team.visualLevel;
-
   const members = Array.from({ length: team.count }).map(() => {
     const memberId = globalMemberCounter;
     globalMemberCounter++;
-
     return {
       id: memberId,
       level: levelNumber, 
@@ -76,7 +70,6 @@ const TEAMS = TEAM_STRUCTURE.map((team) => {
       plate: `plate${memberId}.png`,
     };
   });
-
   return { ...team, levelNumber, members };
 });
 
@@ -84,12 +77,26 @@ const TEAMS = TEAM_STRUCTURE.map((team) => {
 // 🃏 CARD COMPONENT
 // ==========================================
 
-const MemberCard = ({ member, isGrid, cardWidth }) => {
+const MemberCard = ({ member, isGrid, cardWidth, delay }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   
-  // 3D Tilt State
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (cardRef.current) observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -116,7 +123,10 @@ const MemberCard = ({ member, isGrid, cardWidth }) => {
         maxWidth: isGrid ? 'none' : STYLE_CONFIG.cardMaxWidth,
         maxHeight: isGrid ? 'none' : STYLE_CONFIG.cardMaxHeight,
         padding: isGrid ? '0' : `0 ${STYLE_CONFIG.cardPadding}`,
-        perspective: '1000px', 
+        perspective: '1000px',
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(50px)',
+        transition: `opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}s, transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}s`,
       }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
@@ -178,11 +188,11 @@ const Team = ({ navHeight }) => {
   const [activeSection, setActiveSection] = useState(TEAMS[0].id);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
-  // Refs
   const sectionRefs = useRef({});
   const hoverTimeoutRef = useRef(null); 
 
   useEffect(() => {
+    // Threshold adjusted to 0.5 to detect center of new scroll area
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -229,6 +239,15 @@ const Team = ({ navHeight }) => {
         }}
       />
 
+      {/* 🔴 FIXED TEAM HEADING (Now part of Flex layout, not absolute overlay) */}
+      <div style={styles.headingContainer}>
+        <img 
+          src={getAsset('teamheading.png')} 
+          alt="Team Heading" 
+          style={styles.headingImage} 
+        />
+      </div>
+
       {/* 🟢 SIDEBAR NAVIGATION */}
       <nav 
         style={styles.sidebarContainer}
@@ -237,7 +256,6 @@ const Team = ({ navHeight }) => {
       >
         {TEAMS.map((team, index) => {
           const reverseIndex = TEAMS.length - 1 - index;
-          
           return (
             <button
               key={team.id}
@@ -248,7 +266,6 @@ const Team = ({ navHeight }) => {
                 transform: isSidebarOpen ? 'translateY(0)' : 'translateY(20px)',
                 pointerEvents: isSidebarOpen ? 'auto' : 'none',
                 transitionDelay: `${reverseIndex * 50}ms`,
-                
                 borderRight: activeSection === team.id ? '3px solid #79bcff' : '3px solid transparent',
                 textShadow: activeSection === team.id ? '0 0 10px rgba(121, 188, 255, 0.8)' : 'none',
                 color: activeSection === team.id ? '#fff' : 'rgba(255,255,255,0.6)',
@@ -260,17 +277,15 @@ const Team = ({ navHeight }) => {
         })}
       </nav>
 
-      {/* 🟢 PODIUM TOGGLE (Modified Logic) */}
+      {/* 🟢 PODIUM TOGGLE */}
       <div 
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
             ...styles.podiumContainer,
-            // ⬇️ LOGIC: Hide (Push Down) if activeSection is 'core', else Show (Rise Up)
             transform: activeSection === 'core' ? 'translateY(150%)' : 'translateY(0%)',
             opacity: activeSection === 'core' ? 0 : 1,
             pointerEvents: activeSection === 'core' ? 'none' : 'auto',
-            // Add a springy transition for the rising effect
             transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease',
         }}
       >
@@ -286,11 +301,10 @@ const Team = ({ navHeight }) => {
         />
       </div>
 
-      {/* Scrollable Content Container */}
+      {/* Scrollable Content Container (Takes remaining height) */}
       <div style={styles.scrollContainer}>
         {TEAMS.map((team) => {
           const isGrid = team.members.length >= 5 || team.id === 'sponsorship';
-          
           let itemWidth;
           if (isGrid) {
              if (team.id === 'sponsorship') itemWidth = '40%'; 
@@ -315,12 +329,13 @@ const Team = ({ navHeight }) => {
                 paddingRight: isGrid ? '10%' : '0',
               }}
             >
-              {team.members.map((member) => (
+              {team.members.map((member, index) => (
                 <MemberCard
                   key={member.id}
                   member={member}
                   isGrid={isGrid}
                   cardWidth={itemWidth}
+                  delay={index * 0.15} 
                 />
               ))}
             </section>
@@ -342,6 +357,8 @@ const styles = {
     height: '100vh',
     overflow: 'hidden',
     backgroundColor: '#050505',
+    display: 'flex',        // 🟢 Changed to Flex
+    flexDirection: 'column' // 🟢 Stack items vertically
   },
   fixedBackground: {
     position: 'absolute',
@@ -354,10 +371,30 @@ const styles = {
     backgroundPosition: 'center',
     filter: 'brightness(0.6)', 
   },
+  // 🔴 Heading Container (Occupies space at top)
+  headingContainer: {
+    width: '100%',
+    height: '140px', // Fixed height for header area
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 50,
+    flexShrink: 0,   // Prevent shrinking
+    paddingTop: '75px',
+  },
+  headingImage: {
+    width: 'auto',
+    height: '120px', 
+    maxWidth: '80%',
+    objectFit: 'contain',
+    // 🟡 Golden Glow Effect
+    filter: 'drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 5px rgba(255, 215, 0, 0.5))',
+  },
+  // 🟢 Scroll Container (Takes remaining space)
   scrollContainer: {
     position: 'relative',
-    height: '100vh',
     width: '100vw',
+    flex: 1, // 🟢 Takes all remaining height below heading
     overflowY: 'scroll',
     scrollSnapType: 'y mandatory',
     scrollbarWidth: 'none', 
@@ -402,7 +439,6 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    // Transformation logic is handled in JSX style prop for dynamic updates
   },
   podiumImage: {
     width: '100%',
@@ -411,14 +447,15 @@ const styles = {
     transition: 'filter 0.3s ease',
   },
 
+  // 🟢 Section (Height is now relative to scroll container)
   teamSection: {
-    height: '100vh',
+    height: '100%', // 🟢 Matches scrollContainer height (not 100vh)
     width: '100vw',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center', 
     scrollSnapAlign: 'start',
-    paddingTop: '60px', 
+    paddingTop: '0px', // Removed extra padding since header is separate
     boxSizing: 'border-box',
   },
   
